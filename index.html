@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SyncTweedies: A General Generative Framework Based on Synchronized Diffusions</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" href="assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="robots" content="noindex">
+
+    <meta property="og:site_name" content="SyncTweedies" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="SyncTweedies: A General Generative Framework Based on Synchronized Diffusions" />
+    <meta property="og:description"
+        content="SyncTweedies: A General Generative Framework Based on Synchronized Diffusions, 2024." />
+    <meta property="og:url" content="" />
+
+    <script src="assets/js/video_comparison.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+  </head>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <div class="highlight-clean" style="padding-bottom: 10px;">
+        <div class="container" style="max-width: 1024px; margin-bottom: 20px;">
+            <h1 class="text-center"><b>SyncTweedies</b>: A General Generative Framework Based on Synchronized Diffusions
+            </h1>
+        </div>
+        <div class="container" style="max-width: 980px; margin-bottom: 20px;">
+            <div class="row authors">
+                <div class="col">
+                    <h5 class="text-center">
+                        <a href="https://jh27kim.github.io/">Jaihoon Kim*</a>, 
+                        <a href="https://63days.github.io/">Juil Koo*</a>,
+                        <a>Kyeongmin Yeo*</a>
+                        <a href="https://mhsung.github.io/">Minhyuk Sung</a>
+                        <br>
+                        <br>KAIST
+                        <br>(* denotes equal contribution.)
+                    </h5>
+                    <!-- <h5 class="text-center">ECCV 2024 Submission</h5> -->
+                </div>
+            </div>
+        </div>
+        <div class="buttons" style="margin-top: 8px; margin-bottom: 8px;">
+            <a class="btn btn-light" role="button" href="http://geometry1.kaist.ac.kr/">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
+                </svg>Paper
+            </a>
+            <a class="btn btn-light disabled border border-dark" aria-disabled="true" role="button" href="#">
+                <svg style="visibility:hidden;width:0px;height:24px;margin-left:-12px;margin-right:12px" width="0px" height="24px" viewBox="0 0 375 531">
+                    <polygon stroke="#000000" points="0.5,0.866 459.5,265.87 0.5,530.874 "></polygon>
+                </svg>
+                Project
+            </a>
+            <a class="btn btn-light" role="button" href="http://geometry1.kaist.ac.kr/">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 
+                            1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 
+                            3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 
+                            2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                </svg>
+                Code
+            </a>
+        </div>
+    </div>
+    
+    <!-- Contents -->
+    <div class="container" style="max-width: 1024px;">
+        <div class="row captioned_videos">
+            <div class="col-md-12">
+                <img src="static/teaser.png" alt="architecture" style="width: 100%">
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Abstract</h2>
+                <p>
+                    We introduce a general framework for generating diverse visual content, including ambiguous images,
+                    panorama images, mesh textures, and Gaussian splat textures, by synchronizing multiple diffusion
+                    processes. We present exhaustive investigation into all possible scenarios for synchronizing
+                    multiple diffusion processes through a canonical space and analyze their characteristics across
+                    applications. In doing so, we reveal a previously unexplored case: averaging the outputs of
+                    Tweedie's formula while conducting denoising in multiple instance spaces. This case also provides
+                    the best quality with the widest applicability to downstream tasks. We name this case SyncTweedies.
+                    In our experiments generating visual content aforementioned, we demonstrate the superior quality of
+                    generation by SyncTweedies compared to other synchronization methods, optimization-based and
+                    iterative-update-based methods.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>3D Mesh Texturing</h2>
+                <h4>🎬 3D Mesh</h4>
+            </div>
+
+            <style>
+                model-viewer {
+                  width: 256px;
+                  height: 256px;
+                }
+            </style>
+
+            <hr class="divider" />
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <model-viewer 
+                        alt="" 
+                        src="static/mesh/glbs/dumpster.glb" 
+                        shadow-intensity="1" 
+                        camera-controls 
+                        touch-action="pan-y">
+                    </model-viewer>
+                    <p class="compare-caption">"A dumpster"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <model-viewer 
+                        alt="" 
+                        src="static/mesh/glbs/clutch_bag.glb" 
+                        shadow-intensity="1" 
+                        camera-controls 
+                        touch-action="pan-y">
+                    </model-viewer>
+                    <p class="compare-caption">"A clutch bag"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <model-viewer 
+                        alt="" 
+                        src="static/mesh/glbs/lemon.glb" 
+                        shadow-intensity="1" 
+                        camera-controls 
+                        touch-action="pan-y">
+                    </model-viewer>
+                    <p class="compare-caption">"A lemon"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <model-viewer 
+                        alt="" 
+                        src="static/mesh/glbs/A_hand_carved_wood_turtle.glb" 
+                        shadow-intensity="1" 
+                        camera-controls 
+                        touch-action="pan-y">
+                    </model-viewer>
+                    <p class="compare-caption">"A hand carved wood turtle"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h4>🎬 Qualitative Results</h4>
+        </div>
+        <div class="row">
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_nascar.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A nascar"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_hamburger.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A hamburger"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_hourglass.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"An hourglass"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_jeep.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A jeep"</p>
+            </div>
+        </div>
+        
+        <!-- ================================ 3D Rendered Video =================================== -->
+        <!-- <div class="row">
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_dumpster.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A dumpster"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_clutch_bag.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A clutch bag"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_turtle.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A hand carved wood turtle"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_pickup_truck.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A pickup truck"</p>
+            </div>
+        </div> -->
+        <!-- <div class="row">
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_hamburger.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A hamburger"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_hourglass.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"An hourglass"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_lemon.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A lemon"</p>
+            </div>
+            <div class="col-md col-sm-3 captioned_videos" id="res_21" style="margin-top: 0px; margin-bottom: 0px ;">
+                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                    <source data-src="static/mesh/showcase/case2_jeep.mp4" type="video/mp4">
+                    </source>
+                </video>
+                <p class="compare-caption">"A jeep"</p>
+            </div>
+        </div> -->
+    </div>
+
+    <!-- ==============================  SDEdit  =============================== -->
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h4>🎨 Luma AI 3D Mesh Re-Texturing</h4>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/turtle.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A turtle"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/golden_turtle.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A golden statue <br> of a turtle"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/car.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A car"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/red_sports_car.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A luxurious <br>red sports car"</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/lantern.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A lantern"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_21"
+                    style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/chinese_lantern.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A chinese style lantern"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/nascar.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A nascar"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/graffiti_car.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A car with graffiti"</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/elephant.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"An elephant"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/african_elephant.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"An african elephant"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/axe.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"An axe"</p>
+                </div>
+                <div class="col-sm-1 col-sm-1"
+                    style="display: flex; align-items: center; font-size: 2em; justify-content: center;">
+                    <p style="text-align: center;">➡</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/sdedit_revised/wooden_axe.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A wooden axe"</p>
+                </div>
+            </div>
+            <!-- ==================================================== -->
+        </div>
+    </div>
+    </div>
+    <!-- ==============================  SDEdit  =============================== -->
+
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>3D Gaussian Splat Texturing</h2>
+                <h4>🎬 Qualitative Results</h4>
+            </div>
+            <hr class="divider" />
+
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos" id="res_4" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A majestic red chair"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_18" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/cucumbers.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A photo of cucumbers"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_24" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/excavator.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A photo of a yellow excavator covered in snow"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_39" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A photo of a white cruise ship at sea"</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 captioned_videos" id="res_4" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/leather_chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A leather chair"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_18" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/corns.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A photo of corns"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_24" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/white_drum.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A white drum kit"</p>
+                </div>
+                <div class="col-md col-sm-3 captioned_videos" id="res_39" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/pirate_ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                    <p class="compare-caption">"A photo of a pirate ship at sea"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h4>🎨 LGM Re-Texturing</h4>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                            <source data-src="static/3dgs/LGM/lgm_bear.mp4" type="video/mp4">
+                            </source>
+                        </video>
+                    </div>
+                    <div class="col-md-2 col-sm-2"
+                        style="display: flex; align-items: center; font-size: 4em; justify-content: center;">
+                        <p style="text-align: center;">➡</p>
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                        <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                            <source data-src="static/3dgs/LGM/cdm_bear.mp4" type="video/mp4">
+                            </source>
+                        </video>
+                    </div>
+                </div>
+                <p class="compare-caption">"A 3D model of a bear dressed in medieval armor"</p>
+            </div>
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                            <source data-src="static/3dgs/LGM/lgm_fox.mp4" type="video/mp4">
+                            </source>
+                        </video>
+                    </div>
+                    <div class="col-md-2 col-sm-2"
+                        style="display: flex; align-items: center; font-size: 4em; justify-content: center;">
+                        <p style="text-align: center;">➡</p>
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                        <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                            <source data-src="static/3dgs/LGM/cdm_fox.mp4" type="video/mp4">
+                            </source>
+                        </video>
+                    </div>
+                </div>
+                <p class="compare-caption">"a 3D model of a marble bust of a fox head"</p>
+            </div>
+        </div>
+    </div-->
+
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>Ambiguous Images</h2>
+                <h4>🎬 Qualitative Results</h4>
+            </div>
+
+            <!-- 90 Degree rotation -->
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <h4>Clockwise 90&deg Rotation</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/rotation_121_v1.png">
+                    <p class="compare-caption">"A painting of a horse"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/rotation_121_v2.png">
+                    <p class="compare-caption">"A painting of a dog"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/rotation_135_v1.png">
+                    <p class="compare-caption">"A painting of a truck"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/rotation_135_v2.png">
+                    <p class="compare-caption">"A painting of a deer"</p>
+                </div>
+            </div>
+
+            <!-- Color Inversion -->
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <h4>Color Inversion</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/negation_318_v1.png">
+                    <p class="compare-caption">"A painting of a ship"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/negation_318_v2.png">
+                    <p class="compare-caption">"A painting of a dog"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/negation_335_v1.png">
+                    <p class="compare-caption" style="font-size: 15px;">"A watercolor painting of an owl"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/negation_335_v2.png">
+                    <p class="compare-caption">"A watercolor painting of a dog"</small></p>
+                </div>
+            </div>
+
+            <!-- Patch Permutation -->
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <h4>Patch Permutation</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/patch_perm_560_v1.png">
+                    <p class="compare-caption">"A photo of a coffee cup"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/patch_perm_560_v2.png">
+                    <p class="compare-caption">"A photo of a snail"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/patch_perm_523_v1.png">
+                    <p class="compare-caption" style="font-size: 15px;">"An oil painting of a watering can"</p>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <img style="width: 100%" src="static/ambiguous_image/patch_perm_523_v2.png">
+                    <p class="compare-caption">"An oil painting of a dragon"</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>Panorama Generation</h2>
+                <h4>🎬 Qualitative Results</h4>
+            </div>  
+            <div class="container" style="max-width: 1024px;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama/mountain_twilight.png">
+                        <p class="compare-caption">"A photo of a mountain range at twilight"</p>
+                    </div>
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama/coral_reef.png">
+                        <p class="compare-caption">"A photo of a beautiful ocean with coral reef"</p>
+                    </div>
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama/northern_lights.png">
+                        <p class="compare-caption">"A photo of a lake under the northern lights"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>Depth-to-360-Panorama Generation</h2>
+                <h4>🎬 Qualitative Results</h4>
+            </div>  
+            <div class="container" style="max-width: 1024px;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama360/91_depth.png">
+                        <img style="width: 100%" src="static/panorama360/91_ours.png">
+                        <p class="compare-caption">"A house at night"</p>
+                    </div>
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama360/370_depth.png">
+                        <img style="width: 100%" src="static/panorama360/370_ours.png">
+                        <p class="compare-caption">"An old looking library"</p>
+                    </div>
+                    <div class="col-md-12">
+                        <img style="width: 100%" src="static/panorama360/495_depth.png">
+                        <img style="width: 100%" src="static/panorama360/495_ours.png">
+                        <p class="compare-caption">"A room that has been painted gold"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>💡 Comparison with Other Methods</h2>
+                <h4>🚀 3D Mesh Texturing</h4>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption"><b>Case1</b></p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case1_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <!-- Center the text ignoring the layout size -->
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case2_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case3_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case4_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case5_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/paintit_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/texture_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/text2tex_baseball_glove.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"Baseball glove"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case1_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case2_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case3_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case4_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case5_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/paintit_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/texture_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/text2tex_minivan.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"Minivan"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case1_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case2_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case3_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case4_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/case5_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/paintit_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/texture_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_tmp/text2tex_iPod.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"iPod"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case1_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case2_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case3_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case4_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case5_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/paintit_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/texture_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/text2tex_pigeon.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"Pigeon"</p>
+            </div>
+
+            <!-- ============================ Additional Video Results =============================== -->
+            <!-- <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case1_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case2_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case3_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case4_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case5_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/paintit_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/texture_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/text2tex_armchair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"Armchair"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case1_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case2_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case3_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case4_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case5_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/paintit_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/texture_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/text2tex_A_photo_of_spiderman.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of spiderman"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case1</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case1_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3 ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case2_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case3</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case3_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case4</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case4_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/case5_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Paint-it</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/paintit_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">TEXTure</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/texture_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Text2Tex</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/mesh/comp_2/text2tex_muffin.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"Muffin"</p>
+            </div> -->
+            <!-- ================================================================== -->
+        </div>
+    </div>
+
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h4>🚀 3D Gaussian Splat Texturing</h4>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/ours_ficus.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sync_ficus.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sds_ficus.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/in2n_ficus.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of a tree with multicolored leaves"</p>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/ours_mic.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sync_mic.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sds_mic.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/in2n_mic.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of a wooden carving of a microphone"</p>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/ours_ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sync_ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/sds_ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_1/in2n_ship.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of an intricate wooden carving of a ship"</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/ours_purple_chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sync_purple_chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sds_purple_chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/in2n_purple_chair.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of a purple chair"</p>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/ours_carrots.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sync_carrots.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sds_carrots.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/in2n_carrots.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of carrots"</p>
+            </div>
+            <div class="row">
+                <div class="col-md col-sm-3 half-ours" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case2</p>
+                    <p class="compare-caption"
+                        style="position: absolute; top: 15%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                        (SyncTweedies)</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/ours_tree_snow.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">Case5</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sync_tree_snow.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">SDS</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/sds_tree_snow.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <div class="col-md col-sm-3" id="res_0" style="margin-top: 0px; margin-bottom: 0px ;">
+                    <p class="compare-caption">IN2N</p>
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="static/3dgs/comp_2/in2n_tree_snow.mp4" type="video/mp4">
+                        </source>
+                    </video>
+                </div>
+                <p class="compare-caption">"A photo of a tree covered in snow"</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>BibTeX</h2>
+                <code>
+                    <!-- @article{shi2023MVDream,<br>
+                    &nbsp; author = {Shi, Yichun and Wang, Peng and Ye, Jianglong and Mai, Long and Li, Kejie and Yang, Xiao},<br>
+                    &nbsp; title  = {MVDream: Multi-view Diffusion for 3D Generation},<br>
+                    &nbsp; journal = {arXiv:2308.16512},<br>
+                    &nbsp; year   = {2023},<br>
+                    } -->
+                </code></div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <footer>
+            <p> Website template from <a href="https://dreamfusion3d.github.io/">DreamFusion</a>. We thank the authors
+                for the open-source code.</p>
+        </footer>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
+    <script src="assets/js/yall.js"></script>
+    <script>
+        yall({
+            observeChanges: true
+        });
+    </script>
+    <script src="assets/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/js/webflow.fd002feec.js"></script>
+    <!-- Import the component -->
+</body>
+
+</html>
