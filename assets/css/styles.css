@@ -770,6 +770,12 @@ hr.divider {
         float: left;
     }
 }
+@media (min-width: 1024px) {
+    .col-custom {
+        width: 50%;
+        float: left;
+    }
+}
 
 .ours {
     font-weight: bold;
