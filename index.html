@@ -29,6 +29,7 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
+    <script src="assets/js/script_groundit.js"></script>
   </head>
 </head>
 
@@ -57,7 +58,7 @@
             </div>
         </div>
         <div class="buttons" style="margin-top: 8px; margin-bottom: 8px;">
-            <a class="btn btn-light" role="button" href="" target="_blank">
+            <a class="btn btn-light" role="button" href="./static/groundit_paper.pdf" target="_blank">
                 <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
                 </svg>PDF
@@ -70,7 +71,7 @@
                 </svg>
                 arXiv
             </a>
-            <a class="btn btn-light" role="button" href="">
+            <a class="btn btn-light" role="button" href="https://github.com/KAIST-Visual-AI-Group/GrounDiT/">
                 <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 
                             1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 
@@ -113,33 +114,42 @@
         </div>
     </div>
 
-    <!-- ==============================  SDEdit  =============================== -->
     <hr class="divider" />
     <div class="container" style="max-width: 1024px;">
-        <div class="col-md-12">
-            <h2>💡 Ambiguous Images</h2>
-        </div>
-
-        <!-- 90 Degree rotation --> 
-=            <div class="row">
-                <div class="col-custom col-custom captioned_videos" id="res_4" style="margin-top: 0px; margin-bottom: 0px">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="static/ambiguous_image/video/121.mp4" type="video/mp4">
-                        </source>
-                    </video>
-                </div>
-                <div class="col-custom col-custom captioned_videos" id="res_4" style="margin-top: 0px; margin-bottom: 0px">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="static/ambiguous_image/video/135.mp4" type="video/mp4">
-                        </source>
-                    </video>
-                </div>
-            </div>
+        <h2>Motivation</h2>
+        <b>
+            Adding spatial control (e.g. bounding boxes) to text-to-image diffusion models greatly enhances the controllability in image generation.
+            However, existing training-free methods still struggle when dealing with complex conditions, such as multiple objects or thin, small objects.<br>
+        </b>
+        <br>
+        <b>
+            🧐 Can we provide precise spatial control over individual bounding boxes?
+        </b>
+        <br><br>
+        <div class="col-md-12">  
+            <img src="static/motivation.png" alt="architecture" style="width: 100%">
         </div>
     </div>
 
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <h2>Main Idea</h2>
+        <br>
+        <div class="col-md-12">  
+            <img src="static/joint_token_denoising.png" alt="architecture" style="width: 90%">
+        </div>
+    </div>
 
     <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <h2>Spatially Grounded Image Generation</h2>
+        GrounDiT enables text-to-image DiT to generate images conditioned on both text prompts and bounding boxes, in a training-free manner.
+        <br><br>
+        <div class="col-md-12">  
+            <img src="static/groundit_supp.png" alt="architecture" style="width: 100%">
+        </div>
+    </div>
+
     <hr class="divider" />
     <div class="container" style="max-width: 1024px;">
         <div class="row">
