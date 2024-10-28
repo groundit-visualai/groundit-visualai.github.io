@@ -116,14 +116,15 @@
 
     <hr class="divider" />
     <div class="container" style="max-width: 1024px;">
-        <h2>Motivation</h2>
+        <h2>🧐 Motivation</h2>
+        <br>
         <b>
             Adding spatial control (e.g. bounding boxes) to text-to-image diffusion models greatly enhances the controllability in image generation.
             However, existing training-free methods still struggle when dealing with complex conditions, such as multiple objects or thin, small objects.<br>
         </b>
         <br>
         <b>
-            🧐 Can we provide precise spatial control over individual bounding boxes?
+            How can we provide precise spatial control over individual bounding boxes?
         </b>
         <br><br>
         <div class="col-md-12">  
@@ -133,7 +134,14 @@
 
     <hr class="divider" />
     <div class="container" style="max-width: 1024px;">
-        <h2>Main Idea</h2>
+        <h2>🔮 Main Idea</h2>
+        <br>
+        <p>
+            Based on the flexibility of Transformer architecture and the role of positional embeddings in encoding spatial information within DiT, 
+            we introduce joint token denoising. We observe that when two noisy images are denoised together — one as a smaller patch and the 
+            other with a generatable-size — they become semantic clones. 
+            Leveraging this "semantic sharing" property of DiT, we propose a novel spatial grounding technique which enables precise control over individual bounding boxes.
+        </p>
         <br>
         <div class="col-md-12">  
             <img src="static/joint_token_denoising.png" alt="architecture" style="width: 90%">
@@ -142,11 +150,23 @@
 
     <hr class="divider" />
     <div class="container" style="max-width: 1024px;">
-        <h2>Spatially Grounded Image Generation</h2>
-        GrounDiT enables text-to-image DiT to generate images conditioned on both text prompts and bounding boxes, in a training-free manner.
-        <br><br>
+        <h2>🖼️ Spatially Grounded Image Generation</h2>
+        <br>
+        <p>
+            Without additional training, GrounDiT reliably generates each object within the specified bounding box, 
+            showing greater robustness compared to previous methods [1].
+        </p>
+        <br>
         <div class="col-md-12">  
-            <img src="static/groundit_supp.png" alt="architecture" style="width: 100%">
+            <img src="static/groundit_supp_part_1.png" alt="supp-1" style="width: 100%">
+        </div>
+        <br><hr>
+        <p>
+            Using PixArt-&alpha; [2] as the base DiT model, GrounDiT can further generate spatially grounded images 
+            across diverse aspect ratios.
+        </p>
+        <div class="col-md-12">  
+            <img src="static/groundit_supp_part_2.png" alt="supp-2" style="width: 100%">
         </div>
     </div>
 
@@ -164,6 +184,25 @@
                     }
                 </code></div>
         </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <h2>Acknowledgements</h2>
+        <p>
+            We thank Juil Koo and Jaihoon Kim for valuable discussions on Diffusion Transformers. This work was supported by the 
+            NRF grant (RS-2023-00209723), IITP grants (RS-2019-II190075, RS-2022-II220594, RS-2023-00227592, RS-2024-00399817), 
+            and KEIT grant (RS-2024-00423625), all funded by the Korean government (MSIT and MOTIE), as well as grants from the 
+            DRB-KAIST SketchTheFuture Research Center, NAVER-Intel Co-Lab, Hyundai NGV, KT, and Samsung Electronics.
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1024px;">
+        <h2>References</h2>
+        <p>
+            [1] <a href="https://arxiv.org/abs/2310.08872">R&B: Region and Boundary Aware Zero-shot Grounded Text-to-image Generation, Xiao et al., ICLR 2024 
+            </a><br>
+            [2] <a href="https://arxiv.org/abs/2202.00008">PIXART-&alpha;: Fast Training of Diffusion Transformer for Photorealistic Text-to-Image Synthesis, Chen et al., ICLR 2024</a>
     </div>
 
     <hr class="divider" />
